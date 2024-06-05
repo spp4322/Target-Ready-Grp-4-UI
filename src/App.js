@@ -16,7 +16,7 @@ function App() {
           />
 
           <Route
-            path='/order-historu'
+            path='/order-history'
             element={
               <OrderHistory />
             }
