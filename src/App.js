@@ -1,24 +1,77 @@
 import logo from './logo.svg';
+import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ProductList from "./components/productList";
 import CreateOrder from "./components/createOrder";
 import OrderHistory from "./components/orderHistory";
 import ProductListItem from './components/productListItem';
 
+const products = [
+  {
+      id: 1,
+      productName: 'Shampoo',
+      productPrice: 448
+  },
+  {
+      id: 2,
+      productName: 'Perfume',
+      productPrice: 880
+  },
+  {
+      id: 3,
+      productName: 'Towel',
+      productPrice: 670
+  }
+];
+
+const initialOrders = [
+  {
+      orderId: 1,
+      customerId: 1,
+      productId: 1,
+      quantity: 2,
+      date: new Date()
+  },
+  {
+      orderId: 2,
+      customerId: 2,
+      productId: 3,
+      quantity: 1,
+      date: new Date()
+  },
+  {
+      orderId: 3,
+      customerId: 1,
+      productId: 1,
+      quantity: 3,
+      date: new Date()
+  }
+];
+
 function App() {
+  const [orderList, setOrderList] = useState(initialOrders);
+
+  const addOrder = (order) => {
+    console.log("addOrder called", order);
+    const arr = orderList;
+    arr.push(order);
+    setOrderList(arr);
+    console.log(orderList);
+  };
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<ProductList />} />
+        <Route path='/' element={<ProductList products={products} />} />
           <Route
             path='/create-order'
-            element={<CreateOrder />}
+            element={<CreateOrder addOrder={addOrder}/>}
           />
 
           <Route
             path='/order-history'
             element={
-              <OrderHistory />
+              <OrderHistory orders={initialOrders} products={products}/>
             }
           />
 

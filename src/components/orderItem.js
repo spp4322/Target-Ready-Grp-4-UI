@@ -1,12 +1,18 @@
 import { Card } from 'antd';
 
-const OrderItem = ({order}) => {
-    const amount = order.productPrice * order.quantity;
+const OrderItem = ({order, products}) => {
+    //const amount = order.productPrice * order.quantity;
+    //console.log(productList);
+
+    const product = products.filter((p) => {if(p.id === order.orderId) {return p}});
+    console.log(product);
+
+    const amount = product[0].productPrice * order.quantity;
 
     return (<>
         <Card
             className='container'
-            title={order.productName}
+            title={product[0].productName}
             bordered={false}
             style={{
                 width: 300,

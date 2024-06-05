@@ -1,25 +1,14 @@
+import { myAxios } from "../services/helper";
 import ProductListItem from "./productListItem";
 import { useNavigate } from "react-router-dom";
 
-const ProductList = () => {
-    const products = [
-        {
-            id: 1,
-            productName: 'Shampoo',
-            productPrice: 448
-        },
-        {
-            id: 2,
-            productName: 'Perfume',
-            productPrice: 880
-        },
-        {
-            id: 3,
-            productName: 'Towel',
-            productPrice: 670
-        }
-    ];
+const ProductList = ({products}) => {
 
+    const response = myAxios.get('/api/v1/target/order/1').then((response) => response.data);
+    console.log(response);
+
+    const listOfProduct = products;
+    
     const navigate = useNavigate()
     function placeOrder(id) {
         //console.log(id);
@@ -27,7 +16,7 @@ const ProductList = () => {
         
     }
 
-    const productJsx = products.map((p) => (<ProductListItem key={p.id} product={p} placeOrder={(id) => placeOrder(id) } />));
+    const productJsx = listOfProduct.map((p) => (<ProductListItem key={p.id} product={p} placeOrder={(id) => placeOrder(id) } />));
 
     return (<>
         <ul className='list-group'>{productJsx}</ul>

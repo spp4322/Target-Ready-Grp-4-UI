@@ -1,34 +1,11 @@
 import OrderItem from "./orderItem";
 
-const OrderHistory = () => {
-    const orders = [
-        {
-            orderId: 1,
-            productId: 1,
-            productName: 'Shampoo',
-            productPrice: 448,
-            quantity: 2,
-            date: new Date()
-        },
-        {
-            orderId: 2,
-            productId: 3,
-            productName: 'Perfume',
-            productPrice: 880,
-            quantity: 1,
-            date: new Date()
-        },
-        {
-            orderId: 3,
-            productId: 1,
-            productName: 'Shampoo',
-            productPrice: 448,
-            quantity: 3,
-            date: new Date()
-        }
-    ];
+const OrderHistory = ({orders, products}) => {
+    const orderList = orders;
 
-    const orderItemJsx = orders.map((o) => (<OrderItem key={o.orderId} order={o} />));
+    //const productList = orders.map((obj) => products.map((p) => p.id === obj.productId && p));
+
+    const orderItemJsx = orderList.map((o) => (<OrderItem key={o.orderId} order={o} products={products} />));
 
     return (<>
         <ul className='list-group'>{orderItemJsx}</ul>
