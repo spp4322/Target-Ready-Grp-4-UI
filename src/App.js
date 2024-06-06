@@ -30,22 +30,19 @@ const initialOrders = [
   {
     orderId: 1,
     customerId: 1,
-    productId: 1,
-    quantity: 2,
+    productId: [1, 3],
     date: new Date()
   },
   {
     orderId: 2,
     customerId: 2,
-    productId: 3,
-    quantity: 1,
+    productId: [2, 3],
     date: new Date()
   },
   {
     orderId: 3,
     customerId: 1,
-    productId: 1,
-    quantity: 3,
+    productId: [2],
     date: new Date()
   }
 ];

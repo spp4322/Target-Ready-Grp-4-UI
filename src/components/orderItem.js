@@ -4,13 +4,15 @@ const OrderItem = ({order, products}) => {
     //const amount = order.productPrice * order.quantity;
     //console.log(productList);
 
-    const product = products.filter((p) => {if(p.id === order.orderId) {return p}});
-    console.log(product);
+    const productList = products.filter((p) => order.productId.includes(p.id));
+    //console.log(productList);
 
-    const amount = product[0].productPrice * order.quantity;
+    //const amount = product[0].productPrice * order.quantity;
+    const amount = productList.reduce((accumulator, currentValue) => accumulator + currentValue.productPrice, 0);
+    //console.log(amount);
 
     return (<>
-        <Card
+        {/* <Card
             className='container'
             title={product[0].productName}
             bordered={false}
@@ -21,7 +23,8 @@ const OrderItem = ({order, products}) => {
         >
             <p>Total Amount: {amount}</p>
             <p>Date of Transaction: {order.date.toString()}</p>
-        </Card>
+        </Card> */}
+        OrderHistory
     </>)
 }
 

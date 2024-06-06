@@ -12,8 +12,9 @@ const CartItem = ({ product, deleteButtonHandler }) => {
             }}
         >
             <p>Amount: {product.productPrice}</p>
+            <p>Quantity: {product.quantity}</p>
             <button
-                onClick={() => deleteButtonHandler(product.id)}
+                onClick={() => deleteButtonHandler(product.productID)}
                 className='btn btn-link bi bi-trash text-danger'
             >Remove from Cart</button>
         </Card>
