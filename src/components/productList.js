@@ -11,7 +11,7 @@ const ProductList = ({ products, addCartItem, cartList }) => {
     const listOfProduct = products;
 
     const navigate = useNavigate()
-    function placeOrder(id) {
+    function addToCart(id) {
         //console.log(id);
         //navigate('/create-order', {state: {id: id}, replace: false});
 
@@ -19,7 +19,7 @@ const ProductList = ({ products, addCartItem, cartList }) => {
         console.log(cartList);
     }
 
-    const productJsx = products.map((p) => (<ProductListItem key={p.id} product={p} placeOrder={(id) => placeOrder(id)} />));
+    const productJsx = products.map((p) => (<ProductListItem key={p.id} product={p} addToCart={(id) => addToCart(id)} />));
 
     return (<>
         <div >

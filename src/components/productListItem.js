@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 
-const ProductListItem = ({product, placeOrder}) => {
+const ProductListItem = ({product, addToCart}) => {
     //console.log(product);
     return (<>
         <Card
@@ -13,7 +13,7 @@ const ProductListItem = ({product, placeOrder}) => {
             }}
         >
             <p>Amount: {product.productPrice}</p>
-            <button onClick={() => placeOrder(product.id)}>Add to Cart</button>
+            <button onClick={() => addToCart(product.id)}>Add to Cart</button>
         </Card>
     </>)
 }

@@ -1,6 +1,6 @@
 import { Card } from 'antd';
 
-const CartItem = ({ product }) => {
+const CartItem = ({ product, deleteButtonHandler }) => {
     return <>
         <Card
             className='container'
@@ -12,6 +12,10 @@ const CartItem = ({ product }) => {
             }}
         >
             <p>Amount: {product.productPrice}</p>
+            <button
+                onClick={() => deleteButtonHandler(product.id)}
+                className='btn btn-link bi bi-trash text-danger'
+            >Remove from Cart</button>
         </Card>
     </>
 };
