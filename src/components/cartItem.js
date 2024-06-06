@@ -1,8 +1,7 @@
 import { Card } from 'antd';
 
-const ProductListItem = ({product, placeOrder}) => {
-    //console.log(product);
-    return (<>
+const CartItem = ({ product }) => {
+    return <>
         <Card
             className='container'
             title={product.productName}
@@ -13,10 +12,8 @@ const ProductListItem = ({product, placeOrder}) => {
             }}
         >
             <p>Amount: {product.productPrice}</p>
-            <button onClick={() => placeOrder(product.id)}>Add to Cart</button>
         </Card>
-    </>)
-}
+    </>
+};
 
-export default ProductListItem;
-
+export default CartItem;
