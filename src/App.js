@@ -7,6 +7,7 @@ import OrderHistory from "./components/orderHistory";
 import ProductListItem from './components/productListItem';
 import Cart from './components/cart';
 import Header from './components/header';
+import QuantAlert from './components/quantAlert';
 
 const products = [
   {
@@ -30,19 +31,19 @@ const initialOrders = [
   {
     orderId: 1,
     CustomerID: 1,
-    ProductList: [{productID: 1, productQuantity: 2}, {productID: 3, productQuantity: 1}],
+    ProductList: [{ productID: 1, productQuantity: 2 }, { productID: 3, productQuantity: 1 }],
     date: new Date()
   },
   {
     orderId: 2,
     CustomerID: 2,
-    ProductList: [{productID: 2, productQuantity: 3}, {productID: 3, productQuantity: 2}],
+    ProductList: [{ productID: 2, productQuantity: 3 }, { productID: 3, productQuantity: 2 }],
     date: new Date()
   },
   {
     orderId: 3,
     CustomerID: 1,
-    ProductList: [{productID: 2, productQuantity: 2}],
+    ProductList: [{ productID: 2, productQuantity: 2 }],
     date: new Date()
   }
 ];
@@ -87,6 +88,13 @@ function App() {
             path='/order-history'
             element={
               <OrderHistory orders={initialOrders} products={products} />
+            }
+          />
+
+          <Route
+            path='/quant-alert'
+            element={
+              <QuantAlert />
             }
           />
 

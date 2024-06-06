@@ -24,7 +24,7 @@ const ProductListItem = ({ product, addToCart }) => {
         data.quantity = parseInt(data.quantity);
 
         const quantity = data.quantity;
-        console.log(quantity);
+        //console.log(quantity);
 
         addToCart(product.productID, quantity);
 

@@ -28,17 +28,21 @@ const ProductList = ({ products, addCartItem, cartList }) => {
         //console.log(quantity);
 
         const order = {id: id, quantity: quantity};
-        const prod = productList.map((p) => p.productId === id);
+        //const prod = productList.map((p) => p.productID === id);
+        const prod = productList.find(product => product.productID === id);
+
+        //console.log(prod);
 
         if(quantity > prod.stockLevel) {
-            return ;
+            navigate('/quant-alert', {replace: true});
         }
+        //console.log(prod.stockLevel);
 
         addCartItem(order);
         //console.log(cartList);
     }
 
-    const productJsx = productList.map((p) => (<ProductListItem key={p.productId} product={p} addToCart={addToCart} />));
+    const productJsx = productList.map((p) => (<ProductListItem key={p.productID} product={p} addToCart={addToCart} />));
 
     if (productList.length === 0) {
         return (<>

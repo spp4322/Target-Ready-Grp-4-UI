@@ -9,7 +9,7 @@ class Header extends Component {
           <div className='container'>
             <h1>
               <i className='me-3'></i>
-              <span>E=Commerce Website</span>
+              <span>E-Commerce Website</span>
             </h1>
           </div>
         </div>
@@ -21,10 +21,10 @@ class Header extends Component {
           <Link className='btn btn-link' to='/cart'>
             Cart
           </Link>{' '}
-          |
-          <Link className='btn btn-link' to='/order-history'>
+          {/* | */}
+          {/* <Link className='btn btn-link' to='/order-history'>
             My Orders
-          </Link>{' '}
+          </Link>{' '} */}
         </div>
       </>
     );

@@ -2,6 +2,7 @@ import CartItem from "./cartItem";
 import { myAxios } from "../services/helper";
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import Header from "./header";
 
 const Cart = ({ cartList }) => {
     //console.log(cartList);
@@ -37,7 +38,7 @@ const Cart = ({ cartList }) => {
 
     const navigate = useNavigate()
     function submitHandler() {
-        console.log("submit called");
+        //console.log("submit called");
         navigate('/create-order', { state: { orderList: newList }, replace: false });
     }
 
@@ -47,6 +48,7 @@ const Cart = ({ cartList }) => {
 
     return (<>
         <div className="container">
+            <Header />
             <button className="mt-3" onClick={() => submitHandler()}>Buy {listOfCart.length} items</button>
             <ul className='list-group'>{cartJsx}</ul>
         </div>
