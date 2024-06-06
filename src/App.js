@@ -29,20 +29,20 @@ const products = [
 const initialOrders = [
   {
     orderId: 1,
-    customerId: 1,
-    productId: [1, 3],
+    CustomerID: 1,
+    ProductList: [{productID: 1, productQuantity: 2}, {productID: 3, productQuantity: 1}],
     date: new Date()
   },
   {
     orderId: 2,
-    customerId: 2,
-    productId: [2, 3],
+    CustomerID: 2,
+    ProductList: [{productID: 2, productQuantity: 3}, {productID: 3, productQuantity: 2}],
     date: new Date()
   },
   {
     orderId: 3,
-    customerId: 1,
-    productId: [2],
+    CustomerID: 1,
+    ProductList: [{productID: 2, productQuantity: 2}],
     date: new Date()
   }
 ];
@@ -68,6 +68,11 @@ function App() {
     setCartList(arr);
   };
 
+  const emptyCart = () => {
+    const arr = [];
+    setCartList(arr);
+  }
+
   return (
     <>
       <BrowserRouter>
@@ -75,7 +80,7 @@ function App() {
           <Route path='/' element={<ProductList products={products} addCartItem={addCartItem} cartList={cartList} />} />
           <Route
             path='/create-order'
-            element={<CreateOrder addOrder={addOrder} />}
+            element={<CreateOrder addOrder={addOrder} emptyCart={emptyCart} />}
           />
 
           <Route

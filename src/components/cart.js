@@ -38,7 +38,7 @@ const Cart = ({ cartList }) => {
     const navigate = useNavigate()
     function submitHandler() {
         console.log("submit called");
-        navigate('/create-order', { state: { orderList: listOfCart }, replace: false });
+        navigate('/create-order', { state: { orderList: newList }, replace: false });
     }
 
     const cartJsx = newList.map((p) => <CartItem key={p.productID} product={p} deleteButtonHandler={deleteButtonHandler} />);

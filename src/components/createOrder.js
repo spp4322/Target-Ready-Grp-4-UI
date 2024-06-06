@@ -1,6 +1,8 @@
 import { useLocation } from "react-router-dom";
 import React from "react";
 import { useState } from "react";
+import { myAxios } from "../services/helper";
+import { useNavigate } from "react-router-dom";
 
 import { Button, Form, Input, Select, Space } from 'antd';
 const { Option } = Select;
@@ -19,108 +21,21 @@ const tailLayout = {
     },
 };
 
-// const CreateOrder = ({ addOrder }) => {
-//     const { state } = useLocation();
-//     const { id } = state;
 
-//     const [data, setData] = useState({
-//         customerId: 0,
-//         quantity: 0,
-//         productId: id,
-//         date: new Date(),
-//         orderId: Math.random,
-//     });
-
-//     const changeHandler = ({ target: { name, value } }) => {
-//         //console.log(value);
-
-//         setData({ ...data, [name]: (value) });
-
-
-//     };
-
-//     const cancelButtonHandler = () => {
-//         setData({
-//             customerId: 0,
-//             quantity: 0,
-//         });
-//     };
-
-//     const submitHandler = (evt) => {
-//         evt.preventDefault(); // prevent submission of form to the server (action attribute)
-
-//         if (data.customerId.trim().length === 0) return;
-
-//         data.customerId = parseInt(data.customerId);
-//         data.quantity = parseInt(data.quantity);
-
-//         addOrder(data);
-
-//         //console.log(data);
-
-//         setData({
-//             customerId: 0,
-//             quantity: 0,
-//         });
-//     };
-
-//     return (
-//         <>
-//             <h3>Expense details</h3>
-
-//             <form onSubmit={submitHandler} className='mb-3'>
-//                 <div className='mb-3'>
-//                     <label htmlFor='descriptionInput' className='form-label'>
-//                         Enter Customer ID
-//                     </label>
-//                     <input
-//                         type='number'
-//                         className='form-control'
-//                         id='descriptionInput'
-//                         value={data.customerId}
-//                         onChange={changeHandler}
-//                         name='customerId'
-//                     />
-//                 </div>
-//                 <div className='mb-3'>
-//                     <label htmlFor='amountInput' className='form-label'>
-//                         Quantity
-//                     </label>
-//                     <input
-//                         type='number'
-//                         className='form-control'
-//                         id='quantity'
-//                         value={data.quantity}
-//                         onChange={changeHandler}
-//                         name='quantity'
-//                     />
-//                 </div>
-//                 <button type='submit' className='btn btn-primary'>
-//                     Buy Now
-//                 </button>
-//                 <button
-//                     onClick={cancelButtonHandler}
-//                     type='button'
-//                     className='btn btn-link text-danger'
-//                 >
-//                     Cancel
-//                 </button>
-//             </form>
-//         </>
-//     );
-// }
-
-const CreateOrder = ({ addOrder }) => {
+const CreateOrder = ({ emptyCart }) => {
     const { state } = useLocation();
     const { orderList } = state;
 
-    console.log(orderList);
+    //console.log(orderList);
+
+    const newList = orderList.map(order => ({
+        productID: order.productID,
+        productQuantity: order.quantity
+    }));
 
     const [data, setData] = useState({
-        customerId: 0,
-        productId: orderList,
-        date: new Date(),
-        orderId: Math.random,
+        CustomerID: 0,
+        ProductList: newList,
     });
 
     const changeHandler = ({ target: { name, value } }) => {
@@ -133,28 +48,37 @@ const CreateOrder = ({ addOrder }) => {
 
     const cancelButtonHandler = () => {
         setData({
-            customerId: 0,
+            CustomerID: 0,
         });
     };
 
+    const navigate = useNavigate();
     const submitHandler = (evt) => {
         evt.preventDefault(); // prevent submission of form to the server (action attribute)
 
-        if (data.customerId.trim().length === 0) return;
 
-        data.customerId = parseInt(data.customerId);
+        if (data.CustomerID.trim().length === 0) return;
 
-        addOrder(data);
+        data.CustomerID = parseInt(data.CustomerID);
+
+        myAxios.post('/api/v1/target/order', data).then((response) => console.log(response.data)).catch((error) => {
+            console.log(error);
+        });;
+
+        emptyCart();
+        navigate('/', {replace: true});
+
+        //addOrder(data);
 
         //console.log(data);
 
         setData({
-            customerId: 0,
+            CustomerID: 0,
         });
     };
 
     return <>
-        <form onSubmit={submitHandler} className='mb-3'>
+        <form onSubmit={submitHandler} className='container mb-3'>
             <div className='mb-3'>
                 <label htmlFor='descriptionInput' className='form-label'>
                     Enter Customer ID
@@ -163,12 +87,12 @@ const CreateOrder = ({ addOrder }) => {
                     type='number'
                     className='form-control'
                     id='descriptionInput'
-                    value={data.customerId}
+                    value={data.CustomerID}
                     onChange={changeHandler}
-                    name='customerId'
+                    name='CustomerID'
                 />
             </div>
-            <button type='submit' className='btn btn-primary'>
+            <button type='submit' className='btn btn-primary' >
                 Buy Now
             </button>
             <button

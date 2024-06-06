@@ -16,7 +16,7 @@ const ProductList = ({ products, addCartItem, cartList }) => {
 
     }, []);
 
-    console.log(productList);
+    //console.log(productList);
 
     const listOfProduct = products;
 
@@ -25,7 +25,7 @@ const ProductList = ({ products, addCartItem, cartList }) => {
         //console.log(id);
         //navigate('/create-order', {state: {id: id}, replace: false});
 
-        console.log(quantity);
+        //console.log(quantity);
 
         const order = {id: id, quantity: quantity};
         const prod = productList.map((p) => p.productId === id);
@@ -35,7 +35,7 @@ const ProductList = ({ products, addCartItem, cartList }) => {
         }
 
         addCartItem(order);
-        console.log(cartList);
+        //console.log(cartList);
     }
 
     const productJsx = productList.map((p) => (<ProductListItem key={p.productId} product={p} addToCart={addToCart} />));
