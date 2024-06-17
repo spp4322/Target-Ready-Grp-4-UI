@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { myAxios } from "../services/helper";
+import Form from 'react-bootstrap/Form';
 import Header from "./header";
 import ProductListItem from "./productListItem";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +11,8 @@ const ProductList = ({ products, addCartItem, cartList }) => {
     // console.log(response);
 
     const [productList, setProductList] = useState([]);
+    const [search, setSearch] = useState('');
+    console.log(search);
 
     useEffect(() => {
         myAxios.get('/api/v1/target/allProducts').then((response) => setProductList(response.data));
@@ -23,9 +26,6 @@ const ProductList = ({ products, addCartItem, cartList }) => {
     const navigate = useNavigate()
     function addToCart(id, quantity) {
         //console.log(id);
-        //navigate('/create-order', {state: {id: id}, replace: false});
-
-        //console.log(quantity);
 
         const order = {id: id, quantity: quantity};
         //const prod = productList.map((p) => p.productID === id);
@@ -42,7 +42,9 @@ const ProductList = ({ products, addCartItem, cartList }) => {
         //console.log(cartList);
     }
 
-    const productJsx = productList.map((p) => (<ProductListItem key={p.productID} product={p} addToCart={addToCart} />));
+    const productJsx = productList.filter((item) => {
+        return search.toLowerCase() === '' ? item : item.productName.toLowerCase().includes(search);
+    }).map((p) => (<ProductListItem key={p.productID} product={p} addToCart={addToCart} />));
 
     if (productList.length === 0) {
         return (<>
@@ -54,6 +56,12 @@ const ProductList = ({ products, addCartItem, cartList }) => {
         return (<>
             <div >
                 <Header className='col-md-12' />
+                <Form className="container">
+                    {/* <InputGroup className='my-3'>
+                        <Form.Control placeholder='Search Contacts' />
+                    </InputGroup> */}
+                    <Form.Control className='my-3' onChange={(e) => setSearch(e.target.value)} placeholder='Search Contacts' />
+                </Form>
                 <ul className='list-group col-md-12 container'>{productJsx}</ul></div>
         </>
         );

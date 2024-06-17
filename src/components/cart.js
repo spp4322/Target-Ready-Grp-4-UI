@@ -30,9 +30,9 @@ const Cart = ({ cartList }) => {
 
     function deleteButtonHandler(id) {
         //console.log(id);
-        console.log(listOfCart);
+        //console.log(listOfCart);
         const newCartList = listOfCart.filter(c => c.id !== id);
-        console.log(newCartList);
+        //console.log(newCartList);
         setListOfCart(newCartList);
     };
 
