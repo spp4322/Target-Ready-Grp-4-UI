@@ -8,6 +8,7 @@ import Cart from "./components/cart";
 import QuantAlert from "./components/quantAlert";
 import Login from "./components/login";
 import Signup from "./components/signup";
+import Address from "./components/address";
 
 const products = [
   {
@@ -82,6 +83,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/address" element={<Address />} />
           <Route path="/signup" element={<Signup />} />
           <Route
             path="/home"

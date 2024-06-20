@@ -1,0 +1,42 @@
+.header-container {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+
+.header-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  margin-right: 1rem;
+  border-radius: 100px;
+}
+
+.site-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.nav-container {
+  margin-top: 0rem;
+  text-align: center;
+}
+
+.nav-link {
+  max-width: 100%;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0rm;
+  margin: 0rem;
+  border-radius: 0rem;
+  background-color: #ff6666;
+}
+
+.nav-link:hover {
+  background-color: #ff3333;
+}

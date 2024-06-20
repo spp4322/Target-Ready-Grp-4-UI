@@ -1,100 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { myAxios } from "../services/helper";
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f1f1f1;
-  padding: 1rem;
-`;
-
-const FormWrapper = styled.div`
-  background-color: #fff;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 360px;
-  background: url("/images.png") no-repeat center top / 60px 60px;
-  @media (max-width: 576px) {
-    padding: 1rem;
-    max-width: 90%;
-    background-size: 50px 50px;
-  }
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 1rem;
-  color: #e60023; /* Target red */
-  margin-top: 80px; /* To push down the title below the background image */
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FormGroup = styled.div`
-  margin-bottom: 0.75rem;
-`;
-
-const Label = styled.label`
-  font-weight: bold;
-  color: #333;
-`;
-
-const Input = styled.input`
-  padding: 0.4rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  width: 100%;
-  margin-top: 0.25rem;
-  &:focus {
-    border-color: #e60023;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(230, 0, 35, 0.25);
-  }
-`;
-
-const Button = styled.button`
-  padding: 0.4rem;
-  border: none;
-  border-radius: 0.25rem;
-  background-color: #e60023; /* Target red */
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 1rem;
-  &:hover {
-    background-color: #c0001b;
-  }
-`;
-
-const LoginLink = styled(Link)`
-  display: block;
-  text-align: center;
-  padding: 0.4rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  background-color: #f8f9fa;
-  color: #000;
-  text-decoration: none;
-  margin-top: 0.5rem;
-  &:hover {
-    background-color: #e2e6ea;
-  }
-`;
-
-const ErrorMessage = styled.span`
-  color: red;
-  font-size: 0.875rem;
-`;
+import "../css/signup.css";
+import isEmail from "validator/lib/isEmail";
+import { isMobilePhone } from "validator";
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -104,11 +13,11 @@ function Signup() {
   const [phoneNumber, setPhonenumber] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     const address = null;
-    console.log("aege eaaef");
     event.preventDefault();
     setErrors({});
     if (
@@ -120,24 +29,27 @@ function Signup() {
       !password
     ) {
       setErrors({
-        firstname: !firstName && "First Name is required",
-        lastname: !lastName && "Last Name is required",
-        phonenumber: !phoneNumber && "Phone Number is required",
+        firstName: !firstName && "First Name is required",
+        lastName: !lastName && "Last Name is required",
+        phoneNumber: !phoneNumber && "Phone Number is required",
         email: !email && "Email is required",
         username: !username && "Username is required",
         password: !password && "Password is required",
       });
       return;
     }
+    if (!isEmail(email)) {
+      setMessage("Please enter a valid Email");
+      setErrors({ email: "Invalid email address" });
+      return;
+    } else setMessage("");
+    if (!isMobilePhone(phoneNumber)) {
+      setMessage("Please enter a valid Phone Number");
+      setErrors({ phoneNumber: "Invalid phone number" });
+      return;
+    } else setMessage("");
 
     try {
-      console.log(firstName);
-      console.log(lastName);
-      console.log(phoneNumber);
-      console.log(email);
-      console.log(username);
-      console.log(address);
-
       const response = await myAxios.post("/api/v1/target/auth/signup", {
         firstName,
         lastName,
@@ -147,15 +59,12 @@ function Signup() {
         password,
         address,
       });
-      if (response.status === 404) {
-        alert("Error: " + response.statusText);
-      } else if (response.status === 400) {
-        alert("Invalid Credentials");
-      } else if (response.status === 200) {
-        alert("Successfully Signed Up");
-        navigate("/", { state: { username } });
+      console.log(response.data);
+      if (response.data === "User Already Exists") {
+        alert("User Already exists");
       } else {
-        alert("Unexpected response status: " + response.status);
+        alert("Successfully Signed up. Redirecting to login page.");
+        navigate("/", { state: { username } });
       }
     } catch (error) {
       if (error.response) {
@@ -172,86 +81,134 @@ function Signup() {
   };
 
   return (
-    <Container>
-      <FormWrapper>
-        <Title>Sign-Up</Title>
-        <Form onSubmit={handleSubmit}>
-          <FormGroup>
-            <Label htmlFor="First Name">First Name</Label>
-            <Input
-              type="text"
-              placeholder="Enter First Name"
-              name="firstName"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            {errors.firstName && (
-              <ErrorMessage>{errors.firstName}</ErrorMessage>
-            )}
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="Last Name">Last Name</Label>
-            <Input
-              type="text"
-              placeholder="Enter Last Name"
-              name="lastname"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-            {errors.lastName && <ErrorMessage>{errors.lastName}</ErrorMessage>}
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="Phone Number">Phone Number</Label>
-            <Input
-              type="text"
-              placeholder="Enter Phone Number"
-              name="Phone Number"
-              value={phoneNumber}
-              onChange={(e) => setPhonenumber(e.target.value)}
-            />
-            {errors.phoneNumber && (
-              <ErrorMessage>{errors.phoneNumber}</ErrorMessage>
-            )}
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              type="email"
-              placeholder="Enter Email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {errors.email && <ErrorMessage>{errors.email}</ErrorMessage>}
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="username">Username</Label>
-            <Input
-              type="text"
-              placeholder="Enter Username"
-              name="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            {errors.username && <ErrorMessage>{errors.username}</ErrorMessage>}
-          </FormGroup>
-          <FormGroup>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              type="password"
-              placeholder="Enter Password"
-              name="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {errors.password && <ErrorMessage>{errors.password}</ErrorMessage>}
-          </FormGroup>
-          {errors.form && <ErrorMessage>{errors.form}</ErrorMessage>}
-          <Button type="submit">Sign Up</Button>
-          <LoginLink to="/">Login</LoginLink>
-        </Form>
-      </FormWrapper>
-    </Container>
+    <div className="container_signup">
+      <div className="left-panel">
+        <img
+          src={require("../images.png")}
+          alt="logo"
+          className="signup-image"
+        />
+        <div className="button-container">
+          <button className="button" type="submit" onClick={handleSubmit}>
+            Sign Up
+          </button>
+          <Link className="login-link" to="/">
+            Login
+          </Link>
+        </div>
+      </div>
+      <div className="right-panel">
+        <div className="form-wrapper">
+          <div className="signup-box">
+            <h2>Sign-Up</h2>
+            <form className="form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="label" htmlFor="firstName">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter First Name"
+                  name="firstName"
+                  className={`input ${errors.firstName ? "input-error" : ""}`}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+                {errors.firstName && (
+                  <span className="error-message">{errors.firstName}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="label" htmlFor="lastName">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Last Name"
+                  name="lastName"
+                  className={`input ${errors.lastName ? "input-error" : ""}`}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+                {errors.lastName && (
+                  <span className="error-message">{errors.lastName}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="label" htmlFor="phoneNumber">
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Phone Number"
+                  name="phoneNumber"
+                  className={`input ${errors.phoneNumber ? "input-error" : ""}`}
+                  value={phoneNumber}
+                  onChange={(e) => setPhonenumber(e.target.value)}
+                />
+                {errors.phoneNumber && (
+                  <span className="error-message">{errors.phoneNumber}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="label" htmlFor="email">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="Enter Email"
+                  name="email"
+                  className={`input ${errors.email ? "input-error" : ""}`}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                {errors.email && (
+                  <span className="error-message">{errors.email}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="label" htmlFor="username">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  placeholder="Enter Username"
+                  name="username"
+                  className={`input ${errors.username ? "input-error" : ""}`}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                {errors.username && (
+                  <span className="error-message">{errors.username}</span>
+                )}
+              </div>
+              <div className="form-group">
+                <label className="label" htmlFor="password">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  placeholder="Enter Password"
+                  name="password"
+                  className={`input ${errors.password ? "input-error" : ""}`}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                {errors.password && (
+                  <span className="error-message">{errors.password}</span>
+                )}
+                <span className="password-tooltip">
+                  Password must be at least 8 characters long
+                </span>
+              </div>
+              {errors.form && (
+                <span className="error-message">{errors.form}</span>
+              )}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
