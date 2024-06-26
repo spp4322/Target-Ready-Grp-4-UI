@@ -1,71 +1,62 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { myAxios } from "../services/helper";
-import Form from 'react-bootstrap/Form';
+import Form from "react-bootstrap/Form";
 import Header from "./header";
 import ProductListItem from "./productListItem";
 import { useNavigate } from "react-router-dom";
+import "../css/productList.css";
 
 const ProductList = ({ products, addCartItem, cartList }) => {
+  const [productList, setProductList] = useState([]);
+  const [search, setSearch] = useState("");
 
-    // const response = myAxios.get('/api/v1/target/allProducts').then((response) => response.data);
-    // console.log(response);
+  useEffect(() => {
+    myAxios
+      .get("/api/v1/target/allProducts")
+      .then((response) => setProductList(response.data));
+  }, []);
 
-    const [productList, setProductList] = useState([]);
-    const [search, setSearch] = useState('');
-    console.log(search);
+  const navigate = useNavigate();
+  function addToCart(id, quantity) {
+    const order = { id: id, quantity: quantity };
+    const prod = productList.find((product) => product.productID === id);
 
-    useEffect(() => {
-        myAxios.get('/api/v1/target/allProducts').then((response) => setProductList(response.data));
-
-    }, []);
-
-    //console.log(productList);
-
-    const listOfProduct = products;
-
-    const navigate = useNavigate()
-    function addToCart(id, quantity) {
-        //console.log(id);
-
-        const order = {id: id, quantity: quantity};
-        //const prod = productList.map((p) => p.productID === id);
-        const prod = productList.find(product => product.productID === id);
-
-        //console.log(prod);
-
-        if(quantity > prod.stockLevel) {
-            navigate('/quant-alert', {replace: true});
-        }
-        //console.log(prod.stockLevel);
-
-        addCartItem(order);
-        //console.log(cartList);
+    if (quantity > prod.stockLevel) {
+      navigate("/quant-alert", { replace: true });
     }
 
-    const productJsx = productList.filter((item) => {
-        return search.toLowerCase() === '' ? item : item.productName.toLowerCase().includes(search);
-    }).map((p) => (<ProductListItem key={p.productID} product={p} addToCart={addToCart} />));
+    addCartItem(order);
+  }
 
-    if (productList.length === 0) {
-        return (<>
-            Loading Data
-        </>);
-    }
+  const productJsx = productList
+    .filter((item) => {
+      return search.toLowerCase() === ""
+        ? item
+        : item.productName.toLowerCase().includes(search);
+    })
+    .map((p) => (
+      <ProductListItem key={p.productID} product={p} addToCart={addToCart} />
+    ));
 
-    else {
-        return (<>
-            <div >
-                <Header className='col-md-12' />
-                <Form className="container">
-                    {/* <InputGroup className='my-3'>
-                        <Form.Control placeholder='Search Contacts' />
-                    </InputGroup> */}
-                    <Form.Control className='my-3' onChange={(e) => setSearch(e.target.value)} placeholder='Search Contacts' />
-                </Form>
-                <ul className='list-group col-md-12 container'>{productJsx}</ul></div>
-        </>
-        );
-    }
-}
+  if (productList.length === 0) {
+    return <>Loading Data...</>;
+  } else {
+    return (
+      <>
+        <Header />
+        <div className="product-list-container">
+          <Form className="search-form-container">
+            <Form.Control
+              className="my-3 search-input"
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search Products"
+            />
+          </Form>
+          <div className="product-list grid-container">{productJsx}</div>
+        </div>
+      </>
+    );
+  }
+};
 
 export default ProductList;
