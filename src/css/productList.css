@@ -4,11 +4,15 @@
   min-height: 100vh;
 }
 
+.search-form-container {
+  margin-bottom: 1rem;
+}
 .search-form {
   margin-bottom: 1rem;
 }
 
 .search-input {
+  margin: 0%;
   border: 1px solid #fff;
   border-radius: 0.25rem;
   padding: 1rem;

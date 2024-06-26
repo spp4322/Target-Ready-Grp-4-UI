@@ -23,6 +23,9 @@ class Header extends Component {
           <Link className="nav-link" to="/address">
             Address
           </Link>
+          <Link className="nav-link" to="/orderHistory">
+            Your Orders
+          </Link>
         </div>
       </>
     );
