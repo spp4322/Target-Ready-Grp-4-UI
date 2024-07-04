@@ -1,4 +1,5 @@
-import React, { Link, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { myAxios } from "../services/helper";
 
@@ -11,23 +12,22 @@ const CreateOrder = ({ emptyCart }) => {
     productQuantity: order.quantity,
   }));
 
+  const customerUsername = useSelector((state) => state.username);
+
   const [data, setData] = useState({
-    customerUsername: "",
+    customerUsername: customerUsername,
     productList: newList,
   });
 
-  const changeHandler = ({ target: { name, value } }) => {
-    setData({ ...data, [name]: value });
-  };
-
-  const cancelButtonHandler = () => {
-    setData({
-      customerUsername: "",
-      productList: newList,
-    });
-  };
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      customerUsername: customerUsername,
+    }));
+  }, [customerUsername, newList]);
 
   const navigate = useNavigate();
+
   const submitHandler = (evt) => {
     evt.preventDefault();
 
@@ -51,19 +51,25 @@ const CreateOrder = ({ emptyCart }) => {
       });
   };
 
+  const cancelButtonHandler = () => {
+    setData({
+      customerUsername: customerUsername,
+      productList: newList,
+    });
+  };
+
   return (
     <form onSubmit={submitHandler} className="container mb-3">
       <div className="mb-3">
         <label htmlFor="customerUsername" className="form-label">
-          Enter Customer Username
+          Customer Username
         </label>
         <input
           type="text"
           className="form-control"
           id="customerUsername"
           value={data.customerUsername}
-          onChange={changeHandler}
-          name="customerUsername"
+          readOnly
         />
       </div>
       <button type="submit" className="btn btn-primary">

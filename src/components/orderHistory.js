@@ -1,33 +1,24 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { myAxios } from "../services/helper";
 import OrderItem from "./orderItem";
 
 const OrderHistory = () => {
-  const [username, setUsername] = useState("");
-  const [submittedUsername, setSubmittedUsername] = useState("");
+  const username = useSelector((state) => state.username);
   const [orderList, setOrderList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleInputChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSubmittedUsername(username);
-  };
-
   useEffect(() => {
     const fetchOrders = async () => {
-      if (!submittedUsername) return;
+      if (!username) return;
 
       setLoading(true);
       setError(null);
 
       try {
         const response = await myAxios.get(
-          `api/v1/target/${submittedUsername}/getAllOrder`
+          `api/v1/target/${username}/getAllOrder`
         );
         setOrderList(response.data);
       } catch (err) {
@@ -38,24 +29,11 @@ const OrderHistory = () => {
     };
 
     fetchOrders();
-  }, [submittedUsername]);
+  }, [username]);
 
   return (
     <div className="container">
-      <form onSubmit={handleSubmit} className="form-inline my-4">
-        <label className="mr-2">
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={handleInputChange}
-            className="form-control ml-2"
-          />
-        </label>
-        <button type="submit" className="btn btn-primary ml-2">
-          Get Order History
-        </button>
-      </form>
+      <h2>Order History for {username}</h2>
 
       {loading && <div>Loading...</div>}
       {error && <div>Error loading orders: {error.message}</div>}
@@ -71,8 +49,8 @@ const OrderHistory = () => {
           ))}
         </ul>
       )}
-      {!loading && !error && orderList.length === 0 && submittedUsername && (
-        <div>No orders found for username: {submittedUsername}</div>
+      {!loading && !error && orderList.length === 0 && username && (
+        <div>No orders found for username: {username}</div>
       )}
     </div>
   );

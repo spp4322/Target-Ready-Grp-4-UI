@@ -1,14 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { myAxios } from "../services/helper";
+import { useSelector, useDispatch } from "react-redux";
+import { setUsername, clearUsername } from "../redux/username/usernameSlice";
 import "../images.png";
 import "../css/login.css";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const username = useSelector((state) => state.username);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +21,7 @@ function Login() {
     try {
       console.log("Sending request to: /api/v1/target/auth/login");
       const response = await myAxios.post("/api/v1/target/auth/login", {
-        username,
+        inputValue,
         password,
       });
       console.log("Response received:", response);
@@ -27,6 +32,7 @@ function Login() {
         alert("Username does not exists");
       } else if (response.status === 200) {
         alert("Successfully Logged In");
+        dispatch(setUsername(inputValue));
         navigate("/home", { state: { username } });
       } else {
         alert("Unexpected response status: " + response.status);
@@ -52,8 +58,8 @@ function Login() {
                 type="text"
                 placeholder="Enter Username"
                 className="form-control rounded-0"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
               />
               {errors.username && (
                 <span className="text-danger">{errors.username}</span>
