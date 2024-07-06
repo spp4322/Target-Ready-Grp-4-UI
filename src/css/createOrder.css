@@ -1,0 +1,24 @@
+.form-red-theme {
+  background-color: #fff0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-red-theme .btn-danger {
+  background-color: #ff4d4d;
+  border-color: #ff4d4d;
+}
+
+.form-red-theme .btn-danger:hover {
+  background-color: #ff1a1a;
+  border-color: #ff1a1a;
+}
+
+.form-red-theme .btn-link.text-danger {
+  color: #ff4d4d;
+}
+
+.form-red-theme .btn-link.text-danger:hover {
+  color: #ff1a1a;
+}

@@ -20,12 +20,13 @@ function Login() {
 
     try {
       console.log("Sending request to: /api/v1/target/auth/login");
+      console.log(inputValue);
       const response = await myAxios.post("/api/v1/target/auth/login", {
-        inputValue,
+        username: inputValue,
         password,
       });
       console.log("Response received:", response);
-
+      console.log(inputValue);
       if (response.data === "Invalid credentials") {
         alert("Password does not match");
       } else if (response.data === "Username not found") {
@@ -33,7 +34,8 @@ function Login() {
       } else if (response.status === 200) {
         alert("Successfully Logged In");
         dispatch(setUsername(inputValue));
-        navigate("/home", { state: { username } });
+        localStorage.setItem("username", inputValue);
+        navigate("/home");
       } else {
         alert("Unexpected response status: " + response.status);
       }
