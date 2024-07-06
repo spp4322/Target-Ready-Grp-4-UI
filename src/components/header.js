@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import useLogout from "./logout";
 import "../css/header.css";
 
 class Header extends Component {
@@ -27,9 +26,6 @@ class Header extends Component {
           <Link className="nav-link" to="/orderHistory">
             Your Orders
           </Link>
-          <button className="nav-link" onClick={useLogout}>
-            Logout
-          </button>
         </div>
       </>
     );

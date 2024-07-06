@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import axios from "axios";
-import "../css/address.css"; // Import the CSS file
+import "../css/address.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { myAxios } from "../services/helper";
 
 function Address() {
+  const navigate = useNavigate();
+  const username = localStorage.getItem("username");
   const [formData, setFormData] = useState({
-    username: "",
     street: "",
     city: "",
     state: "",
@@ -20,19 +23,18 @@ function Address() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { username, street, city, state, postalCode, country } = formData;
-    axios
-      .post(`http://localhost:8081/api/v1/target/${username}/address`, {
-        street,
-        city,
-        state,
-        postalCode,
-        country,
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    const { street, city, state, postalCode, country } = formData;
+    console.log(formData);
+    console.log(username);
+    myAxios
+      .post(`/api/v1/target/${username}/address`, {
+        formData,
       })
       .then((response) => {
         console.log("Address submitted successfully:", response.data);
+        navigate("/home");
       })
       .catch((error) => {
         console.error("There was an error submitting the address:", error);
@@ -47,15 +49,6 @@ function Address() {
       </header>
       <div className="container">
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>Username:</label>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
           <div>
             <label>Street:</label>
             <input

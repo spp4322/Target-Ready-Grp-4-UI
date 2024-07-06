@@ -3,9 +3,9 @@ import React from "react";
 const OrderItem = ({ order, quantity, date }) => {
   return (
     <li className="list-group-item">
-      <div>Order ID: {order}</div>
-      <div>Quantity: {quantity}</div>
-      <div>Date: {date}</div>
+      <p>Product ID: {order}</p>
+      <p>Quantity: {quantity}</p>
+      <p>Date: {new Date(date).toLocaleString()}</p>
     </li>
   );
 };

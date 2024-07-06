@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { myAxios } from "../services/helper";
+import "../css/createOrder.css"; // Assuming you have a CSS file for custom styles
 
 const CreateOrder = ({ emptyCart }) => {
   const { state } = useLocation();
@@ -12,7 +13,7 @@ const CreateOrder = ({ emptyCart }) => {
     productQuantity: order.quantity,
   }));
 
-  const customerUsername = useSelector((state) => state.username);
+  const customerUsername = localStorage.getItem("username");
 
   const [data, setData] = useState({
     customerUsername: customerUsername,
@@ -24,7 +25,7 @@ const CreateOrder = ({ emptyCart }) => {
       ...prevData,
       customerUsername: customerUsername,
     }));
-  }, [customerUsername, newList]);
+  }, [customerUsername]);
 
   const navigate = useNavigate();
 
@@ -33,16 +34,13 @@ const CreateOrder = ({ emptyCart }) => {
 
     if (data.customerUsername.trim().length === 0) return;
 
-    console.log(data);
-
     myAxios
       .post("/api/v1/target/order", data)
       .then((response) => {
-        console.log(response.data);
         emptyCart();
         navigate("/home", { replace: true });
         setData({
-          customerUsername: "",
+          customerUsername: customerUsername,
           productList: [],
         });
       })
@@ -59,29 +57,19 @@ const CreateOrder = ({ emptyCart }) => {
   };
 
   return (
-    <form onSubmit={submitHandler} className="container mb-3">
-      <div className="mb-3">
-        <label htmlFor="customerUsername" className="form-label">
-          Customer Username
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="customerUsername"
-          value={data.customerUsername}
-          readOnly
-        />
+    <form onSubmit={submitHandler} className="container mb-3 form-red-theme">
+      <div className="d-flex justify-content-center">
+        <button type="submit" className="btn btn-danger me-2">
+          Buy Now
+        </button>
+        <button
+          onClick={cancelButtonHandler}
+          type="button"
+          className="btn btn-link text-danger"
+        >
+          Cancel
+        </button>
       </div>
-      <button type="submit" className="btn btn-primary">
-        Buy Now
-      </button>
-      <button
-        onClick={cancelButtonHandler}
-        type="button"
-        className="btn btn-link text-danger"
-      >
-        Cancel
-      </button>
     </form>
   );
 };
