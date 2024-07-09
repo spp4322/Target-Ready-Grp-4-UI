@@ -1,44 +1,53 @@
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Header Styles */
 .header-container {
-  background-color: #ff4d4d;
-  color: #fff;
+  background-color: #eb4b4b;
+  padding: 1rem 0;
 }
 
 .header-content {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .logo {
-  width: 100px;
-  height: 100px;
-  margin-right: 1rem;
-  border-radius: 100px;
+  width: 50px;
+  height: 50px;
 }
 
 .site-title {
-  color: red;
-  font-size: 2rem;
+  color: #fff;
+  font-size: 1.8rem;
   font-weight: bold;
-}
-
-.nav-container {
-  max-width: 100%;
-  margin-top: 0rem;
+  flex-grow: 1;
   text-align: center;
 }
 
+.nav-container {
+  display: flex;
+}
+
 .nav-link {
-  align-content: center;
-  max-width: 100px;
   color: #fff;
-  font-weight: bold;
   text-decoration: none;
-  margin-left: 170px;
-  margin-bottom: 2px;
-  border-radius: 2rem;
-  background-color: #ff6666;
+  font-weight: bold;
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  transition: background-color 0.3s ease;
 }
 
 .nav-link:hover {
-  background-color: #ff3333;
+  background-color: #ffffff;
 }

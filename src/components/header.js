@@ -6,27 +6,18 @@ class Header extends Component {
   render() {
     return (
       <>
-        <div className="header-container">
-          <div className="header-content container">
-            <img src={require("../images.png")} alt="Logo" className="logo" />{" "}
-            {/* Update the src path to your logo image */}
+        <header className="header-container">
+          <div className="header-content">
+            <img src={require("../images.png")} alt="Logo" className="logo" />
             <h1 className="site-title">E-Commerce Website</h1>
+            <nav className="nav-container">
+              <Link className="nav-link" to="/home">Home</Link>
+              <Link className="nav-link" to="/cart">Cart</Link>
+              <Link className="nav-link" to="/address">Address</Link>
+              <Link className="nav-link" to="/orderHistory">Your Orders</Link>
+            </nav>
           </div>
-        </div>
-        <div className="nav-container container">
-          <Link className="nav-link" to="/home">
-            Home
-          </Link>
-          <Link className="nav-link" to="/cart">
-            Cart
-          </Link>
-          <Link className="nav-link" to="/address">
-            Address
-          </Link>
-          <Link className="nav-link" to="/orderHistory">
-            Your Orders
-          </Link>
-        </div>
+        </header>
       </>
     );
   }

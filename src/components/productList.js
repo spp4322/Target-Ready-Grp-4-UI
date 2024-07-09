@@ -47,7 +47,7 @@ const ProductList = ({ products, addCartItem, cartList }) => {
         <div className="product-list-container">
           <Form className="search-form-container">
             <Form.Control
-              className="my-3 search-input"
+              className="search-input"
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search Products"
             />
